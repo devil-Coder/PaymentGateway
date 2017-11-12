@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head ng-app="vellore" ng-controller="contentDelivery">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crypto Project</title>
+    <link type="text/stylesheets" href="/stylesheets/animate.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+  <style>
+    /**
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+    .StripeElement {
+      background-color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      box-shadow: 0 1px 3px 0 #e6ebf1;
+      -webkit-transition: box-shadow 150ms ease;
+      transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+      box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+      border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+      background-color: #fefde5 !important;
+    }
+  </style>
+</head>
+<body background="#fefde5" style="font-family:Raleway;" >
+<h1 style="background-color: #007bff; padding:5%; color: white;">
+    Payment Gateway
+</h1>
+  <div class="container" style="margin:5%">
+    <div class="row">
+        <div class="col-lg-6">
+            <%if(message){%>
+            <div class="col-lg-12">
+                <div class="alert alert-success" role="alert">
+                    <%=message%>
+                </div>
+            </div>
+            <%}%>
+            <h1 class="t"> Add a new card</h1>
+            <h6 class="text-info" style="font-family: cursive;">We will save your card using AES256 encryption</h6>
+            <label for="card-element" class="text-warning">
+                <b>Enter your card Details</b>
+            </label><br>
+            <form action="/addcard" method="post" class="form">
+                <div class="form-inline">
+                    <span>
+                        <input type="tel" class="form-control" name="cardno" size="25" placeholder="CARD NUMBER" maxlength="16" pattern="[0-9]{16}" title="16 digit card number" required>
+                        <input type="tel" class="form-control" name="carddoe" size="6" placeholder="MM/YY" pattern="[0-9]{4}" title="4 digit MMYY" maxlength="4" required>
+                        <input type="tel" class="form-control" name="cardcvc" size="3" placeholder="CVC" pattern="[0-9]{3}"  title="3 digit cvc number" maxlength="3" required>
+                    </span>
+
+                    <!-- Used to display form errors -->
+                    <div id="card-errors" role="alert"></div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-outline-primary float-right">Save Card</button>
+            </form>
+        </div>
+        <div class="col-lg-6">
+            <%if(messageSuccessPay){%>
+            <div class="col-lg-12">
+                <div class="alert alert-success" role="alert">
+                    <%=messageSuccessPay%>
+                </div>
+            </div>
+            <%}%>
+            <%if(messageErrorPay){%>
+            <div class="col-lg-12">
+                <div class="alert alert-danger" role="alert">
+                    <%=messageErrorPay%>
+                </div>
+            </div>
+            <%}%>
+            <h1 class="t"> Buy Products</h1>
+            <h6 class="text-info" style="font-family: cursive;">We will verify both your card and product you buy.</h6>
+            <label for="card-element" class="text-warning">
+                <b>Enter your card Details</b>
+            </label><br>
+            <form action="/verifyTransaction" method="post" class="form">
+                <div class="form-inline">
+                    <span>
+                        <input type="tel" class="form-control" name="cardno" size="25" placeholder="CARD NUMBER" maxlength="16" pattern="[0-9]{16}" title="16 digit card number" required>
+                        <input type="tel" class="form-control" name="carddoe" size="6" placeholder="MM/YY" pattern="[0-9]{4}" title="4 digit MMYY" maxlength="4" required>
+                        <input type="tel" class="form-control" name="cardcvc" size="3" placeholder="CVC" pattern="[0-9]{3}"  title="3 digit cvc number" maxlength="3" required>
+                    </span>
+                    <br><br>
+
+                    <select class="custom-select" name="category">
+                        <option selected>Select category of Product</option>
+                        <option value="Footwear">Footwear</option>
+                        <option value="CLOTHING">CLOTHING</option>
+                        <option value="Flower gift & cakes">Flower gift & cakes</option>
+                        <option value="Books & Magazines">Books & Magazines</option>
+                        <option value="Cameras & Optics">Cameras & Optics</option>
+                        <option value="Kitchen & Home Appliances & Electronics">Kitchen & Home Appliances & Electronics</option>
+                        <option value="Laptops & Computer">Laptops & Computer</option>
+                        <option value="Memory Cards, Pen Drives & HDD">Memory Cards, Pen Drives & HDD</option>
+                        <option value="Mobile Phones & Accessories">Mobile Phones & Accessories</option>
+                        <option value="Watches">Watches</option>
+                        <option value="Photo prints">Photo prints</option>
+                        <option value="Movies & Music">Movies & Music</option>
+                        <option value="Fitness & Sports">Fitness & Sports</option>
+                        <option value="Cosmetics & Health">Cosmetics & Health</option>
+                        <option value="Fun Stuff">Fun Stuff</option>
+                        <option value="Perfumes">Perfumes</option>
+                        <option value="Jewellery">Jewellery</option>
+                        <option value="Baby Products & kids toys">Baby Products & kids toys</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Food">Food</option>
+                        <option value="GROCERIES">GROCERIES</option>
+                        <option value="Mobile Recharge & Bill payment">Mobile Recharge & Bill payment</option>
+                    </select>
+
+
+                    <!-- Used to display form errors -->
+                    <div id="card-errors" role="alert"></div>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-outline-primary float-right">Submit Payment</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!--<script>-->
+    <!--// Create a Stripe client-->
+    <!--var stripe = Stripe('pk_test_nXya5gRcnIPlMX8pHFUdYBQ0');-->
+
+    <!--// Create an instance of Elements-->
+    <!--var elements = stripe.elements();-->
+
+    <!--// Custom styling can be passed to options when creating an Element.-->
+    <!--// (Note that this demo uses a wider set of styles than the guide below.)-->
+    <!--var style = {-->
+        <!--base: {-->
+            <!--color: '#32325d',-->
+            <!--lineHeight: '24px',-->
+            <!--fontFamily: '"Helvetica Neue", Helvetica, sans-serif',-->
+            <!--fontSmoothing: 'antialiased',-->
+            <!--fontSize: '16px',-->
+            <!--'::placeholder': {-->
+                <!--color: '#aab7c4'-->
+            <!--}-->
+        <!--},-->
+        <!--invalid: {-->
+            <!--color: '#fa755a',-->
+            <!--iconColor: '#fa755a'-->
+        <!--}-->
+    <!--};-->
+
+    <!--// Create an instance of the card Element-->
+    <!--var card = elements.create('card', {style: style});-->
+
+    <!--// Add an instance of the card Element into the `card-element` <div>-->
+    <!--card.mount('#card-element');-->
+
+    <!--// Handle real-time validation errors from the card Element.-->
+    <!--card.addEventListener('change', function(event) {-->
+        <!--var displayError = document.getElementById('card-errors');-->
+        <!--if (event.error) {-->
+            <!--displayError.textContent = event.error.message;-->
+        <!--} else {-->
+            <!--displayError.textContent = '';-->
+        <!--}-->
+    <!--});-->
+<!--</script>-->
+</body>
+</html>
